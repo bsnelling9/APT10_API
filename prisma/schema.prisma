@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model calibration_adc_data {
+  session_id           Int
+  serial_number        Int
+  temperature_index    Int
+  pressure_index       Int
+  temperature_value    Float?
+  temperature_adc      Int?
+  pressure_value       Float?
+  pressure_adc         Int?
+  calibration_sessions calibration_sessions @relation(fields: [session_id, serial_number], references: [session_id, serial_number], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([session_id, serial_number, temperature_index, pressure_index])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model calibration_dac_data {
+  session_id           Int
+  serial_number        Int
+  temperature_index    Int
+  dac_point_index      Int
+  dac_output_code      Int?
+  dmm_voltage          Float?
+  calibration_sessions calibration_sessions @relation(fields: [session_id, serial_number], references: [session_id, serial_number], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([session_id, serial_number, temperature_index, dac_point_index])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model calibration_sessions {
+  session_id           Int                    @default(autoincrement())
+  serial_number        Int
+  timestamp            DateTime?              @db.Timestamp(6)
+  p_cntrlr_sn          String?                @db.VarChar(50)
+  dmm_sn               String?                @db.VarChar(50)
+  pressure_code        String?                @db.VarChar(10)
+  calibration_units    String?                @db.VarChar(20)
+  dac_test_codes       String?                @db.VarChar(200)
+  calibration_adc_data calibration_adc_data[]
+  calibration_dac_data calibration_dac_data[]
+  sensor_assemblies    sensor_assemblies      @relation(fields: [serial_number], references: [serial_number], onDelete: NoAction, onUpdate: NoAction)
+  final_coefficients   final_coefficients?
+  initial_coefficients initial_coefficients?
+
+  @@id([session_id, serial_number])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model final_coefficients {
+  session_id           Int
+  serial_number        Int
+  stock_code           String?              @db.VarChar(50)
+  h0                   Float?
+  h1                   Float?
+  h2                   Float?
+  h3                   Float?
+  g0                   Float?
+  g1                   Float?
+  g2                   Float?
+  g3                   Float?
+  m0                   Float?
+  m1                   Float?
+  m2                   Float?
+  m3                   Float?
+  n0                   Float?
+  n1                   Float?
+  n2                   Float?
+  n3                   Float?
+  padc_gain            Float?
+  tadc_gain            Float?
+  padc_offset          Float?
+  tadc_offset          Float?
+  calibration_sessions calibration_sessions @relation(fields: [session_id, serial_number], references: [session_id, serial_number], onDelete: NoAction, onUpdate: NoAction)
+  transducer           transducer?          @relation(fields: [stock_code, serial_number], references: [stock_code, serial_number], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([session_id, serial_number])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model initial_coefficients {
+  session_id           Int
+  serial_number        Int
+  h0                   Float?
+  h1                   Float?
+  h2                   Float?
+  h3                   Float?
+  g0                   Float?
+  g1                   Float?
+  g2                   Float?
+  g3                   Float?
+  m0                   Float?
+  m1                   Float?
+  m2                   Float?
+  m3                   Float?
+  n0                   Float?
+  n1                   Float?
+  n2                   Float?
+  n3                   Float?
+  padc_gain            Float?
+  tadc_gain            Float?
+  padc_offset          Float?
+  tadc_offset          Float?
+  calibration_sessions calibration_sessions @relation(fields: [session_id, serial_number], references: [session_id, serial_number], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([session_id, serial_number])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sensor_assemblies {
+  serial_number           Int                    @id @default(autoincrement())
+  sensor_serial_number    String?                @db.VarChar(50)
+  pressure_code           String?                @db.VarChar(10)
+  stock_code              String?                @db.VarChar(50)
+  calibration_config_file String?                @db.VarChar(100)
+  ram_config_file         String?                @db.VarChar(100)
+  calibration_sessions    calibration_sessions[]
+  transducer              transducer[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model transducer {
+  stock_code           String               @db.VarChar(50)
+  serial_number        Int
+  electrical_output    String?              @db.VarChar(50)
+  pressure_range       String?              @db.VarChar(50)
+  output_configuration String?              @db.VarChar(20)
+  final_cal_timestamp  DateTime?            @db.Timestamp(6)
+  model_number         String?              @db.VarChar(50)
+  final_coefficients   final_coefficients[]
+  sensor_assemblies    sensor_assemblies    @relation(fields: [serial_number], references: [serial_number], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([stock_code, serial_number])
+}
