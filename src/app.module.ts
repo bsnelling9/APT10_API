@@ -10,6 +10,7 @@ import { CalibrationDacDataModule } from './calibration_dac_data/calibration_dac
 import { InitialCoefficientsModule } from './initial_coefficients/initial_coefficients.module';
 import { TransducerModule } from './transducer/transducer.module';
 import { FinalCoefficientsModule } from './final_coefficients/final_coefficients.module';
+import { ConvertOutputModule } from './convert-output/convert-output.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { FinalCoefficientsModule } from './final_coefficients/final_coefficients
     InitialCoefficientsModule,
     TransducerModule,
     FinalCoefficientsModule,
+    ConvertOutputModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
