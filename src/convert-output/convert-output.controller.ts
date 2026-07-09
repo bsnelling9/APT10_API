@@ -10,6 +10,9 @@ export class ConvertOutputController {
     serial_number: number;
     v_min: number;
     v_max: number;
+    p_min: number;
+    p_max: number;
+    pressure_unit: string;
   }) {
     return this.convertOutputService.convert(data);
   }

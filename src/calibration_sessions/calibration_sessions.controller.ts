@@ -7,6 +7,7 @@ export class CalibrationSessionsController {
 
   @Post()
   create(@Body() data: {
+    session_id?: number;
     serial_number: number;
     timestamp?: Date;
     p_cntrlr_sn?: string;

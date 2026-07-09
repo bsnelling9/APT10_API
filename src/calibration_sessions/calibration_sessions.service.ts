@@ -6,6 +6,7 @@ export class CalibrationSessionsService {
   constructor(private prisma: PrismaService) {}
 
   async create(data: {
+    session_id?: number;
     serial_number: number;
     timestamp?: Date;
     p_cntrlr_sn?: string;
