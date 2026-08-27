@@ -9,7 +9,7 @@ export class CalibrationSessionsController {
   create(@Body() data: {
     session_id?: number;
     serial_number: number;
-    timestamp?: Date;
+    timestamp?: Date | string;
     p_cntrlr_sn?: string;
     dmm_sn?: string;
     pressure_code?: string;

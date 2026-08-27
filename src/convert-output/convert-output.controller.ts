@@ -8,8 +8,9 @@ export class ConvertOutputController {
   @Post()
   convert(@Body() data: {
     serial_number: number;
-    v_min: number;
-    v_max: number;
+    output_type: string;
+    out_min: number;
+    out_max: number;
     p_min: number;
     p_max: number;
     pressure_unit: string;
