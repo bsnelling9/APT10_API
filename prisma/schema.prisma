@@ -140,3 +140,20 @@ model transducer {
 
   @@id([stock_code, serial_number])
 }
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model stock_codes {
+  id                 Int      @id @default(autoincrement())
+  stock_code         String   @unique @db.VarChar(50)
+  output_type        String   @db.VarChar(50)
+  output_min         Float
+  output_max         Float
+  pressure_reference String?  @db.VarChar(50)
+  pressure_units     String   @db.VarChar(50)
+  pressure_min       Float
+  pressure_max       Float
+  pressure_code      String?  @db.VarChar(50)
+  accuracy           String?  @db.VarChar(50)
+  created_at         DateTime @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime @default(now()) @db.Timestamptz(6)
+}

@@ -11,6 +11,7 @@ import { InitialCoefficientsModule } from './initial_coefficients/initial_coeffi
 import { TransducerModule } from './transducer/transducer.module';
 import { FinalCoefficientsModule } from './final_coefficients/final_coefficients.module';
 import { ConvertOutputModule } from './convert-output/convert-output.module';
+import { StockCodesModule } from './stock_codes/stock_codes.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ConvertOutputModule } from './convert-output/convert-output.module';
     TransducerModule,
     FinalCoefficientsModule,
     ConvertOutputModule,
+    StockCodesModule
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
